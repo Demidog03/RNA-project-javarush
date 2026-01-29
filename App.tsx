@@ -5,13 +5,15 @@ import {
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import HomeScreen from "@/app/screens/home/HomeScreen";
 import DetailsScreen from "@/app/screens/details/DetailsScreen";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import {Ionicons} from "@expo/vector-icons";
 import {AuthContext, useIsSignedIn} from "@/app/context/AuthContext";
+import {Provider} from "react-redux";
+import {persistor, store} from "@/app/store/store";
+import TodosScreen from "@/app/screens/todos/TodosScreen";
+import {PersistGate} from "redux-persist/integration/react";
 
 
 const RootStack = createNativeStackNavigator({
-    initialRouteName: 'Home',
+    initialRouteName: 'Todos',
     screens: {
         Home: {
             screen: HomeScreen,
@@ -20,6 +22,12 @@ const RootStack = createNativeStackNavigator({
             screen: DetailsScreen,
             if: useIsSignedIn,
         },
+        Todos: {
+            screen: TodosScreen,
+            options: {
+                headerShown: false,
+            }
+        }
     }
 });
 
@@ -59,8 +67,12 @@ const Navigation = createStaticNavigation(RootStack)
 
 export default function App() {
     return (
-        <AuthContext value={{ isAuthenticated: true }}>
-            <Navigation />
-        </AuthContext>
+        <Provider store={store}>
+            <PersistGate persistor={persistor}>
+                <AuthContext value={{ isAuthenticated: true }}>
+                    <Navigation />
+                </AuthContext>
+            </PersistGate>
+        </Provider>
     );
 }
