@@ -5,12 +5,20 @@ import {
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import HomeScreen from "@/app/screens/home/HomeScreen";
 import DetailsScreen from "@/app/screens/details/DetailsScreen";
-import {AuthContext, useIsSignedIn} from "@/app/context/AuthContext";
 import {Provider} from "react-redux";
 import {persistor, store} from "@/app/store/store";
 import TodosScreen from "@/app/screens/todos/TodosScreen";
 import {PersistGate} from "redux-persist/integration/react";
+import LoginScreen from "@/app/screens/login/LoginScreen";
+import AuthGuard from "@/app/guards/AuthGuard";
 
+function GuardedTodosScreen() {
+    return (
+        <AuthGuard>
+            <TodosScreen />
+        </AuthGuard>
+    )
+}
 
 const RootStack = createNativeStackNavigator({
     initialRouteName: 'Todos',
@@ -20,10 +28,15 @@ const RootStack = createNativeStackNavigator({
         },
         Details: {
             screen: DetailsScreen,
-            if: useIsSignedIn,
         },
         Todos: {
-            screen: TodosScreen,
+            screen: GuardedTodosScreen,
+            options: {
+                headerShown: false,
+            }
+        },
+        Login: {
+            screen: LoginScreen,
             options: {
                 headerShown: false,
             }
@@ -69,9 +82,7 @@ export default function App() {
     return (
         <Provider store={store}>
             <PersistGate persistor={persistor}>
-                <AuthContext value={{ isAuthenticated: true }}>
-                    <Navigation />
-                </AuthContext>
+                <Navigation />
             </PersistGate>
         </Provider>
     );
