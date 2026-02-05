@@ -48,3 +48,14 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+## REACT BUNDLE VISUALIZER SCRIPTS:
+
+```bash
+   npx react-native bundle --platform ios --dev false --entry-file expo/AppEntry.js --bundle-output ./bundle.js --sourcemap-output ./bundle.map --sourcemap-sources-root ./      
+```
+
+```bash
+   npx source-map-explorer bundle.js bundle.map --html bundle-analysis.html --no-border-checks 
+```

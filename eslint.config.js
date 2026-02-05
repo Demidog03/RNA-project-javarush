@@ -6,5 +6,16 @@ module.exports = defineConfig([
   expoConfig,
   {
     ignores: ['dist/*'],
+    "overrides": [
+      {
+        "files": [
+          "**/*.spec.js",
+          "**/*.spec.jsx"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
   },
 ]);

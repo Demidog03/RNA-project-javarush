@@ -11,6 +11,8 @@ function AuthGuard({ children }: { children: JSX.Element }) {
     const dispatch = useAppDispatch();
     const { navigate } = useNavigation();
 
+    console.log(getProfilePending, loginPending);
+
     useEffect(() => {
         if (token) {
             dispatch(getProfileThunk(token))
